@@ -22,9 +22,9 @@ public class UserBranchSevices {
         return userBranchRepository.save(userBranch);
     }
 
-    // Lấy UserBranch theo userId
+    // Lấy UserBranch theo userId (lấy bản ghi mới nhất theo assignedAt)
     public UserBranch getByUserId(Integer userId) {
-        return userBranchRepository.findByUserId(userId);
+        return userBranchRepository.findTopByUserIdOrderByAssignedAtDesc(userId);
     }
 
     // Lấy Userid theo branchId

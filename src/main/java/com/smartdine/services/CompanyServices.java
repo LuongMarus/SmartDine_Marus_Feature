@@ -247,7 +247,7 @@ public class CompanyServices {
                 .orElseThrow(() -> new RuntimeException("Công ty không tồn tại"));
 
         // 3. Lấy danh sách chi nhánh
-        UserBranch ub = userBranchRepository.findByUserId(userId);
+        UserBranch ub = userBranchRepository.findTopByUserIdOrderByAssignedAtDesc(userId);
 
         // Nếu không có chi nhánh
         if (ub == null) {

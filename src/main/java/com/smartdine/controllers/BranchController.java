@@ -58,7 +58,7 @@ public class BranchController {
     }
 
     // Lấy thông tin branch theo mã code
-    @GetMapping("/code/{branchCode}")
+    @GetMapping("/{branchCode}")
     public ResponseEntity<Branch> getBranchByCode(@PathVariable String branchCode) {
         Branch branch = branchServices.findBranch(branchCode);
         if (branch == null) {
