@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartdine.models.Item;
 import com.smartdine.models.Order;
 import com.smartdine.models.OrderItem;
 import com.smartdine.models.RestaurantTable;
 import com.smartdine.models.User;
 import com.smartdine.models.UserBranch;
+import com.smartdine.services.ItemServices;
 import com.smartdine.services.OrderItemService;
 import com.smartdine.services.OrderServices;
 import com.smartdine.services.PaymentService;
@@ -50,6 +52,9 @@ public class DashboardController {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private ItemServices itemServices;
 
     // Lấy thống kê tổng quan dashboard theo chi nhánh
     @GetMapping("/overview/branch/{branchId}")
@@ -300,6 +305,9 @@ public class DashboardController {
             Map<Integer, Map<String, Object>> dishStats = new HashMap<>();
             for (OrderItem item : orderItems) {
                 Integer itemId = item.getItemId();
+                Item dishItem = itemServices.getById(itemId);
+                if (dishItem == null) continue; // Skip if item not found
+
                 dishStats.putIfAbsent(itemId, new HashMap<>());
                 Map<String, Object> stats = dishStats.get(itemId);
 
@@ -307,13 +315,21 @@ public class DashboardController {
                 int currentQuantity = (Integer) stats.getOrDefault("quantity", 0);
                 stats.put("quantity", currentQuantity + item.getQuantity());
 
-                // Lưu itemId
+                // Lưu thông tin item
                 stats.put("itemId", itemId);
-                stats.put("name", "Món " + itemId); // Placeholder
+                stats.put("name", dishItem.getName());
+                stats.put("price", dishItem.getPrice());
             }
 
-            // Chuyển thành list và sắp xếp theo quantity giảm dần
-            List<Map<String, Object>> topDishes = dishStats.values().stream()
+            // Tính revenue và chuyển thành list
+            List<Map<String, Object>> soldDishes = dishStats.values().stream()
+                .map(stats -> {
+                    int quantity = (Integer) stats.get("quantity");
+                    BigDecimal price = (BigDecimal) stats.get("price");
+                    BigDecimal revenue = price.multiply(BigDecimal.valueOf(quantity));
+                    stats.put("revenue", revenue);
+                    return stats;
+                })
                 .sorted((a, b) -> ((Integer) b.get("quantity")).compareTo((Integer) a.get("quantity")))
                 .limit(10) // Top 10 dishes
                 .collect(java.util.stream.Collectors.toList());
@@ -323,7 +339,7 @@ public class DashboardController {
             result.put("period", period);
             result.put("startDate", startDate.toString());
             result.put("endDate", endDate.toString());
-            result.put("topDishes", topDishes);
+            result.put("soldDishes", soldDishes);
 
             return ResponseEntity.ok(result);
         } catch (Exception ex) {

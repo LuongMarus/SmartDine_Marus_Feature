@@ -1,101 +1,46 @@
 -- Sample data for SmartDine backend
--- This script creates sample orders with revenue data for testing
+-- This script creates sample items and order_items for testing top dishes API
 
--- Thêm dữ liệu orders mẫu với totalAmount để test revenue API
--- Branch 1 - 7 ngày gần đây với revenue data
+-- Thêm dữ liệu items mẫu
+INSERT INTO items (name, price, category_id, description, image_url, status_id, created_at, updated_at) VALUES
+('Phở Bò', 45000, 1, 'Phở bò truyền thống', NULL, 1, NOW(), NOW()),
+('Cơm Rang Dưa Bò', 35000, 2, 'Cơm rang với dưa bò', NULL, 1, NOW(), NOW()),
+('Bún Bò Huế', 40000, 1, 'Bún bò Huế cay', NULL, 1, NOW(), NOW()),
+('Gỏi Cuốn', 25000, 3, 'Gỏi cuốn tôm thịt', NULL, 1, NOW(), NOW()),
+('Cà Phê Sữa Đá', 20000, 4, 'Cà phê sữa đá', NULL, 1, NOW(), NOW()),
+('Trà Đá', 15000, 4, 'Trà đá pha sẵn', NULL, 1, NOW(), NOW()),
+('Bánh Mì Thịt', 30000, 5, 'Bánh mì thịt nướng', NULL, 1, NOW(), NOW()),
+('Canh Chua Cá', 35000, 1, 'Canh chua cá hồi', NULL, 1, NOW(), NOW()),
+('Gà Rán', 55000, 2, 'Gà rán giòn', NULL, 1, NOW(), NOW()),
+('Mì Xào Hải Sản', 42000, 1, 'Mì xào hải sản', NULL, 1, NOW(), NOW());
 
--- Ngày hôm nay (2025-10-26)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
--- Sáng (6h-12h)
-(1, 1, 3, 250000, '2025-10-26 07:30:00', '2025-10-26 08:00:00'),
-(2, 1, 3, 180000, '2025-10-26 08:15:00', '2025-10-26 08:45:00'),
-(3, 1, 3, 320000, '2025-10-26 09:20:00', '2025-10-26 10:00:00'),
-(4, 1, 3, 150000, '2025-10-26 10:30:00', '2025-10-26 11:00:00'),
-(5, 1, 3, 420000, '2025-10-26 11:45:00', '2025-10-26 12:30:00'),
+-- Thêm order_items cho các orders đã có (để test top dishes)
+-- Giả sử orders đã tồn tại với ID từ 1 trở lên
 
--- Trưa (12h-18h)
-(1, 1, 3, 380000, '2025-10-26 12:15:00', '2025-10-26 13:00:00'),
-(2, 1, 3, 290000, '2025-10-26 13:30:00', '2025-10-26 14:15:00'),
-(3, 1, 3, 350000, '2025-10-26 14:45:00', '2025-10-26 15:30:00'),
-(4, 1, 3, 200000, '2025-10-26 15:20:00', '2025-10-26 16:00:00'),
-(5, 1, 3, 480000, '2025-10-26 17:10:00', '2025-10-26 18:00:00'),
+-- Order 1: Phở Bò x2, Cơm Rang x1, Trà Đá x3
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(1, 1, 2, 1, 1, NOW()), (1, 2, 1, 1, 1, NOW()), (1, 6, 3, 1, 1, NOW());
 
--- Tối (18h-22h)
-(1, 1, 3, 520000, '2025-10-26 18:30:00', '2025-10-26 19:15:00'),
-(2, 1, 3, 390000, '2025-10-26 19:45:00', '2025-10-26 20:30:00'),
-(3, 1, 3, 450000, '2025-10-26 20:15:00', '2025-10-26 21:00:00'),
-(4, 1, 2, 300000, '2025-10-26 21:30:00', '2025-10-26 21:30:00'), -- Đang phục vụ
-(5, 1, 2, 280000, '2025-10-26 21:45:00', '2025-10-26 21:45:00'); -- Đang phục vụ
+-- Order 2: Bún Bò Huế x1, Gỏi Cuốn x2, Cà Phê x2
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(2, 3, 1, 1, 1, NOW()), (2, 4, 2, 1, 1, NOW()), (2, 5, 2, 1, 1, NOW());
 
--- Hôm qua (2025-10-25)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 280000, '2025-10-25 08:00:00', '2025-10-25 08:45:00'),
-(2, 1, 3, 320000, '2025-10-25 12:30:00', '2025-10-25 13:15:00'),
-(3, 1, 3, 450000, '2025-10-25 18:45:00', '2025-10-25 19:30:00'),
-(4, 1, 3, 380000, '2025-10-25 19:15:00', '2025-10-25 20:00:00'),
-(5, 1, 3, 520000, '2025-10-25 20:30:00', '2025-10-25 21:15:00');
+-- Order 3: Phở Bò x3, Gà Rán x1, Trà Đá x4
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(3, 1, 3, 1, 1, NOW()), (3, 9, 1, 1, 1, NOW()), (3, 6, 4, 1, 1, NOW());
 
--- 2 ngày trước (2025-10-24)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 310000, '2025-10-24 09:15:00', '2025-10-24 10:00:00'),
-(2, 1, 3, 240000, '2025-10-24 13:00:00', '2025-10-24 13:45:00'),
-(3, 1, 3, 420000, '2025-10-24 18:30:00', '2025-10-24 19:15:00'),
-(4, 1, 3, 350000, '2025-10-24 19:45:00', '2025-10-24 20:30:00');
+-- Order 4: Cơm Rang x1, Bánh Mì x1, Cà Phê x1
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(4, 2, 1, 1, 1, NOW()), (4, 7, 1, 1, 1, NOW()), (4, 5, 1, 1, 1, NOW());
 
--- 3 ngày trước (2025-10-23)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 290000, '2025-10-23 08:30:00', '2025-10-23 09:15:00'),
-(2, 1, 3, 380000, '2025-10-23 12:45:00', '2025-10-23 13:30:00'),
-(3, 1, 3, 470000, '2025-10-23 18:15:00', '2025-10-23 19:00:00'),
-(4, 1, 3, 320000, '2025-10-23 19:30:00', '2025-10-23 20:15:00'),
-(5, 1, 3, 410000, '2025-10-23 20:45:00', '2025-10-23 21:30:00');
+-- Order 5: Phở Bò x4, Bún Bò Huế x2, Gỏi Cuốn x3, Trà Đá x5
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(5, 1, 4, 1, 1, NOW()), (5, 3, 2, 1, 1, NOW()), (5, 4, 3, 1, 1, NOW()), (5, 6, 5, 1, 1, NOW());
 
--- 4 ngày trước (2025-10-22)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 260000, '2025-10-22 07:45:00', '2025-10-22 08:30:00'),
-(2, 1, 3, 340000, '2025-10-22 12:15:00', '2025-10-22 13:00:00'),
-(3, 1, 3, 480000, '2025-10-22 18:00:00', '2025-10-22 18:45:00'),
-(4, 1, 3, 390000, '2025-10-22 19:15:00', '2025-10-22 20:00:00');
-
--- 5 ngày trước (2025-10-21)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 320000, '2025-10-21 08:15:00', '2025-10-21 09:00:00'),
-(2, 1, 3, 280000, '2025-10-21 13:30:00', '2025-10-21 14:15:00'),
-(3, 1, 3, 450000, '2025-10-21 18:45:00', '2025-10-21 19:30:00'),
-(4, 1, 3, 370000, '2025-10-21 20:00:00', '2025-10-21 20:45:00'),
-(5, 1, 3, 500000, '2025-10-21 21:15:00', '2025-10-21 22:00:00');
-
--- 6 ngày trước (2025-10-20)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 290000, '2025-10-20 09:00:00', '2025-10-20 09:45:00'),
-(2, 1, 3, 350000, '2025-10-20 12:30:00', '2025-10-20 13:15:00'),
-(3, 1, 3, 420000, '2025-10-20 18:15:00', '2025-10-20 19:00:00'),
-(4, 1, 3, 380000, '2025-10-20 19:30:00', '2025-10-20 20:15:00');
-
--- 7 ngày trước (2025-10-19)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
-(1, 1, 3, 310000, '2025-10-19 08:45:00', '2025-10-19 09:30:00'),
-(2, 1, 3, 270000, '2025-10-19 13:00:00', '2025-10-19 13:45:00'),
-(3, 1, 3, 460000, '2025-10-19 18:30:00', '2025-10-19 19:15:00'),
-(4, 1, 3, 400000, '2025-10-19 20:00:00', '2025-10-19 20:45:00'),
-(5, 1, 3, 520000, '2025-10-19 21:30:00', '2025-10-19 22:15:00');
-
--- Thêm dữ liệu cho branch 2 (ít hơn để so sánh)
-INSERT INTO orders (table_id, branch_id, status_id, total_amount, created_at, updated_at) VALUES
--- Hôm nay branch 2
-(6, 2, 3, 200000, '2025-10-26 08:00:00', '2025-10-26 08:45:00'),
-(7, 2, 3, 300000, '2025-10-26 12:30:00', '2025-10-26 13:15:00'),
-(8, 2, 3, 250000, '2025-10-26 18:00:00', '2025-10-26 18:45:00'),
-(9, 2, 2, 180000, '2025-10-26 20:30:00', '2025-10-26 20:30:00'), -- Đang phục vụ
-
--- Hôm qua branch 2
-(6, 2, 3, 220000, '2025-10-25 09:00:00', '2025-10-25 09:45:00'),
-(7, 2, 3, 280000, '2025-10-25 13:30:00', '2025-10-25 14:15:00'),
-(8, 2, 3, 320000, '2025-10-25 19:00:00', '2025-10-25 19:45:00');
-
--- Comment: 
--- status_id = 2: SERVING (đang phục vụ, chưa thanh toán)
--- status_id = 3: COMPLETED (đã hoàn thành, đã thanh toán)
--- total_amount là giá trị VND (ví dụ: 250000 = 250,000 VND)
--- Branch 1 có nhiều orders hơn và revenue cao hơn Branch 2
--- Dữ liệu được phân bố đều qua các giờ trong ngày để test hourly revenue
+-- Thêm một số order_items khác để có dữ liệu phong phú hơn
+INSERT INTO order_items (order_id, item_id, quantity, status_id, added_by, created_at) VALUES
+(6, 9, 2, 1, 1, NOW()), (6, 8, 1, 1, 1, NOW()), (6, 5, 3, 1, 1, NOW()),
+(7, 10, 2, 1, 1, NOW()), (7, 4, 1, 1, 1, NOW()), (7, 6, 2, 1, 1, NOW()),
+(8, 1, 2, 1, 1, NOW()), (8, 2, 2, 1, 1, NOW()), (8, 7, 1, 1, 1, NOW()),
+(9, 3, 1, 1, 1, NOW()), (9, 9, 1, 1, 1, NOW()), (9, 5, 2, 1, 1, NOW()),
+(10, 1, 3, 1, 1, NOW()), (10, 10, 1, 1, 1, NOW()), (10, 6, 3, 1, 1, NOW());
