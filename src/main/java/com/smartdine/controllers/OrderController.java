@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartdine.models.Item;
 import com.smartdine.models.Order;
 import com.smartdine.models.OrderItem;
+import com.smartdine.services.ItemServices;
 import com.smartdine.services.OrderItemService;
 import com.smartdine.services.OrderServices;
 
@@ -34,6 +36,9 @@ public class OrderController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private ItemServices itemServices;
 
     // save order
 
@@ -363,14 +368,22 @@ public class OrderController {
             List<com.smartdine.models.OrderItem> todayOrderItems = orderItemService
                     .getOrderItemsByOrderIds(todayOrderIds);
 
-            // Mock item names để tránh lỗi ApplicationContext null khi deploy
+            // Lấy tên item từ database
             java.util.Map<Integer, String> itemIdToName = new java.util.HashMap<>();
-            itemIdToName.put(1, "Phở Bò");
-            itemIdToName.put(2, "Bún Chả");
-            itemIdToName.put(3, "Trà Đá");
-            itemIdToName.put(4, "Cơm Tấm");
-            itemIdToName.put(5, "Bánh Mì");
-            itemIdToName.put(6, "Món Khác");
+            // Lấy tất cả itemIds từ orderItems
+            java.util.Set<Integer> itemIds = todayOrderItems.stream()
+                .map(com.smartdine.models.OrderItem::getItemId)
+                .collect(java.util.stream.Collectors.toSet());
+            
+            // Query tên cho từng itemId
+            for (Integer itemId : itemIds) {
+                Item item = itemServices.getById(itemId);
+                if (item != null) {
+                    itemIdToName.put(itemId, item.getName());
+                } else {
+                    itemIdToName.put(itemId, "Món không xác định");
+                }
+            }
 
             // Sold dishes: group by itemId, sum quantity, statusId != 5 (not cancelled)
             List<Map<String, Object>> soldDishes = todayOrderItems.stream()
@@ -447,6 +460,11 @@ public class OrderController {
             summary.put("totalOrders", todayOrders.size());
             summary.put("statusBreakdown", statusCounts);
             summary.put("hourlyBreakdown", hourlyOrders);
+            summary.put("soldDishes", soldDishes);
+            summary.put("cancelledDishes", cancelledDishes);
+            summary.put("extraDishes", extraDishes);
+            summary.put("extraSupplies", extraSupplies);
+            summary.put("extraDocuments", extraDocuments);
             summary.put("lastUpdated", now.toString());
 
             return ResponseEntity.ok(summary);

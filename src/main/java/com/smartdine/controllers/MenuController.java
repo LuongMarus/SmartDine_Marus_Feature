@@ -1,7 +1,5 @@
 package com.smartdine.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,40 +100,8 @@ public class MenuController {
             @PathVariable Integer branchId,
             @RequestParam(value = "limit", defaultValue = "10") int limit) {
         try {
-            // TODO: Implement logic to get top dishes by sales/revenue
-            // For now, return mock data structure matching the API spec
-            
-            List<Map<String, Object>> topDishes = new ArrayList<>();
-            
-            // Mock top dishes data - should be replaced with actual database query
-            // that joins MenuItem, OrderItem tables to get real statistics
-            Map<String, Object> dish1 = new HashMap<>();
-            dish1.put("itemId", 1);
-            dish1.put("name", "Phở bò");
-            dish1.put("quantity", 20);
-            dish1.put("revenue", 300000);
-            topDishes.add(dish1);
-            
-            Map<String, Object> dish2 = new HashMap<>();
-            dish2.put("itemId", 2);
-            dish2.put("name", "Cơm tấm");
-            dish2.put("quantity", 15);
-            dish2.put("revenue", 225000);
-            topDishes.add(dish2);
-            
-            Map<String, Object> dish3 = new HashMap<>();
-            dish3.put("itemId", 3);
-            dish3.put("name", "Bún bò Huế");
-            dish3.put("quantity", 12);
-            dish3.put("revenue", 180000);
-            topDishes.add(dish3);
-            
-            // Limit results
-            List<Map<String, Object>> limitedResults = topDishes.stream()
-                .limit(limit)
-                .toList();
-            
-            return ResponseEntity.ok(limitedResults);
+            List<Map<String, Object>> topDishes = menuServices.getTopDishesByBranch(branchId, limit);
+            return ResponseEntity.ok(topDishes);
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body("Lỗi " + ex.getMessage());
         }
