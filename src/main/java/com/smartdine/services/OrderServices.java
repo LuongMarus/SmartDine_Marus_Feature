@@ -57,6 +57,13 @@ public class OrderServices {
         return orderRepository.findByTableIdAndCreatedAtBetween(tableId, startOfDay, endOfDay);
     }
 
+    // Kiểm tra xem bàn có active orders (chưa thanh toán) không
+    public boolean hasActiveOrders(Integer tableId) {
+        List<Order> orders = getOrdersByTableIdToday(tableId);
+        // StatusId = 2 là "SERVING" (đang phục vụ, chưa thanh toán)
+        return orders.stream().anyMatch(order -> order.getStatusId() == 2);
+    }
+
     // Lấy danh sách order theo branchId ngay hôm nay
     public List<Order> getOrdersByBranchIdToday(Integer branchId) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));

@@ -58,7 +58,7 @@ public class BranchController {
     }
 
     // Lấy thông tin branch theo mã code
-    @GetMapping("/{branchCode}")
+    @GetMapping("/code/{branchCode}")
     public ResponseEntity<Branch> getBranchByCode(@PathVariable String branchCode) {
         Branch branch = branchServices.findBranch(branchCode);
         if (branch == null) {
@@ -129,9 +129,9 @@ public class BranchController {
     public ResponseEntity<?> getBranchesByManager(@PathVariable Integer managerId) {
         try {
             List<Branch> branches = branchServices.getAll()
-                .stream()
-                .filter(branch -> branch.getManagerId().equals(managerId))
-                .collect(java.util.stream.Collectors.toList());
+                    .stream()
+                    .filter(branch -> branch.getManagerId().equals(managerId))
+                    .collect(java.util.stream.Collectors.toList());
             return ResponseEntity.ok(branches);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Lỗi " + e.getMessage());
@@ -140,18 +140,19 @@ public class BranchController {
 
     // Cập nhật trạng thái chi nhánh
     @PutMapping("/{branchId}/status")
-    public ResponseEntity<?> updateBranchStatus(@PathVariable Integer branchId, @RequestBody Map<String, Integer> statusUpdate) {
+    public ResponseEntity<?> updateBranchStatus(@PathVariable Integer branchId,
+            @RequestBody Map<String, Integer> statusUpdate) {
         try {
             Branch branch = branchServices.getBranchById(branchId);
             if (branch == null) {
                 return ResponseEntity.notFound().build();
             }
-            
+
             Integer newStatusId = statusUpdate.get("statusId");
             if (newStatusId == null) {
                 return ResponseEntity.badRequest().body("statusId là bắt buộc");
             }
-            
+
             branch.setStatusId(newStatusId);
             Branch updated = branchServices.updateBranch(branchId, branch);
             return ResponseEntity.ok(updated);

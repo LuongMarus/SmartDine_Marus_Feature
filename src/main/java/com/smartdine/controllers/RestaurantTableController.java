@@ -84,6 +84,11 @@ public class RestaurantTableController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTable(@PathVariable Integer id) {
         try {
+            // Kiểm tra xem bàn có active orders không
+            if (orderServices.hasActiveOrders(id)) {
+                return ResponseEntity.badRequest().body("Không thể xóa bàn đang có đơn hàng chưa thanh toán");
+            }
+
             boolean deleted = restaurantTableServices.delete(id);
             if (!deleted) {
                 return ResponseEntity.notFound().build();
