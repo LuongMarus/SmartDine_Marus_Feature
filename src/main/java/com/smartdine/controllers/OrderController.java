@@ -194,7 +194,7 @@ public class OrderController {
 
     // Thống kê đơn hàng theo chi nhánh
     @GetMapping("/statistics/branch/{branchId}")
-    public ResponseEntity<?> getOrderStatisticsByBranch(@PathVariable Integer branchId) {
+    public ResponseEntity<?> getOrderStatisticsByBranch(@PathVariable Integer branchId, @RequestParam(required = false) String date) {
         try {
             // Lấy tất cả orders
             List<Order> allOrders = orderServices.getAll();
@@ -203,9 +203,18 @@ public class OrderController {
             // TODO: Cần implement method trong OrderServices để filter theo branchId
 
             // Thống kê cơ bản
-            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
-            LocalDateTime startOfDay = now.withHour(0).withMinute(0).withSecond(0).withNano(0);
-            LocalDateTime endOfDay = now.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+            LocalDateTime targetDate;
+            if (date != null && !date.isEmpty()) {
+                // Parse date from param (format: YYYY-MM-DD)
+                LocalDate parsedDate = LocalDate.parse(date);
+                targetDate = parsedDate.atStartOfDay(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
+            } else {
+                // Use current date if no date param
+                targetDate = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+            }
+
+            LocalDateTime startOfDay = targetDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime endOfDay = targetDate.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
             List<Order> todayOrders = allOrders.stream()
                     .filter(order -> order.getBranchId() != null && order.getBranchId().equals(branchId))
@@ -309,7 +318,7 @@ public class OrderController {
 
             Map<String, Object> statistics = new HashMap<>();
             statistics.put("branchId", branchId);
-            statistics.put("date", now.toLocalDate().toString());
+            statistics.put("date", targetDate.toLocalDate().toString());
             statistics.put("totalOrdersToday", totalOrdersToday);
             statistics.put("completedOrdersToday", completedOrdersToday);
             statistics.put("pendingOrdersToday", pendingOrdersToday);
