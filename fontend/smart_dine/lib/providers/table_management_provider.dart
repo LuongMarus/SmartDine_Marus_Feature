@@ -103,17 +103,16 @@ class TableManagementNotifier extends RealtimeNotifier<List<table_model.Table>> 
     }
   }
 
-  Future<bool> deleteTable(int tableId) async {
+  Future<Map<String, dynamic>> deleteTable(int tableId) async {
     try {
-      final success = await _api.deleteTable(tableId);
-      if (success) {
+      final result = await _api.deleteTable(tableId);
+      if (result['success'] == true) {
         // Refresh the table list immediately
         await refresh();
-        return true;
       }
-      return false;
+      return result;
     } catch (error) {
-      return false;
+      return {'success': false, 'message': 'Lỗi không xác định: $error'};
     }
   }
 }

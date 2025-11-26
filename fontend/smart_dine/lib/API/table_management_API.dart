@@ -133,12 +133,26 @@ class TableManagementAPI {
   }
 
   // Xóa bàn
-  Future<bool> deleteTable(int tableId) async {
+  Future<Map<String, dynamic>> deleteTable(int tableId) async {
     try {
       final response = await _httpService.delete('$baseUrl/table-management/$tableId');
-      return response.statusCode >= 200 && response.statusCode < 300;
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return {'success': true, 'message': 'Xóa bàn thành công'};
+      } else {
+        // Parse error message từ response body
+        String errorMessage = 'Không thể xóa bàn';
+        try {
+          final data = _parseResponse(response);
+          if (data != null && data is String) {
+            errorMessage = data;
+          }
+        } catch (e) {
+          // Ignore parse error, use default message
+        }
+        return {'success': false, 'message': errorMessage};
+      }
     } catch (e) {
-            return false;
+      return {'success': false, 'message': 'Lỗi kết nối: $e'};
     }
   }
 

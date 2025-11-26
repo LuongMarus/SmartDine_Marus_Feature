@@ -1204,11 +1204,21 @@ class _TableManagementScreenState extends ConsumerState<TableManagementScreen> w
                           final branchId = ref.read(currentBranchIdProvider);
                           if (branchId != null && table.id != null) {
                             try {
-                              await ref.read(tableManagementProvider(branchId).notifier)
+                              final result = await ref.read(tableManagementProvider(branchId).notifier)
                                 .deleteTable(table.id!);
                               
                               Navigator.pop(context);
-                              _showSuccessDialog(context, 'Xóa Thành Công', isDark, cardColor);
+                              
+                              if (result['success'] == true) {
+                                _showSuccessDialog(context, 'Xóa Thành Công', isDark, cardColor);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(result['message'] ?? 'Không thể xóa bàn'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
                             } catch (e) {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
