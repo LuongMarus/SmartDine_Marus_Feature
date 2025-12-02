@@ -1,33 +1,33 @@
-# 🍽️ SmartDine - Marus Features Repository
+# 🍽️ SmartDine - Branch Management Module
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.7.0-blue.svg)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-3.0+-blue.svg)](https://dart.dev/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-2.7+-green.svg)](https://spring.io/projects/spring-boot)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **Developer**: Hà Đức Lương (Marus)  
-> **My Personal Features for SmartDine Restaurant Management System**
+> **Branch Management Module for SmartDine Restaurant Management System**
 
 ---
 
 ## 👋 Welcome!
 
-This is my personal development repository showcasing the features and modules I've built for **SmartDine RMS**. Each feature is crafted with attention to detail, focusing on user experience and operational efficiency.
+This repository showcases the **Branch Management Module** I developed for SmartDine RMS - a comprehensive solution for restaurant branch operations with 12 interactive screens and complete backend integration.
 
 ---
 
-## ✨ Featured Work
+## ✨ Branch Management Features
 
-### 🎯 Branch Management Dashboard
-**Status**: ✅ Production Ready | **Screens**: 8 | **Tech**: Flutter + fl_chart
+### 🎯 Complete Branch Operations Suite
+**Status**: ✅ Production Ready | **Screens**: 12 | **Tech**: Flutter + Spring Boot + PostgreSQL
 
-A comprehensive branch management system with:
-- 📊 **Interactive Analytics** - Revenue & order tracking with dynamic charts
-- 🔔 **Smart Notifications** - 10+ categorized alert types
-- 📋 **Order Management** - Complete order tracking with unique data
-- 📈 **Performance Metrics** - Employee rankings & hourly analytics
-- 🎨 **Dark/Light Mode** - Full theme support
-
-**[View Complete Documentation →](README_MARUS.md)**
+A full-featured branch management system including:
+- 📊 **Branch Dashboard** - Real-time analytics with interactive charts
+- 📈 **Branch Reports** - Date-filtered performance analysis  
+- 👥 **Employee Management** - Staff operations & performance tracking
+- 🪑 **Table Management** - Table setup, types & occupancy stats
+- 📋 **Order Management** - Complete order lifecycle tracking
+- 🔔 **Notifications Center** - Smart alert categorization
+- ⚙️ **Branch Settings** - Configuration & preferences
 
 ---
 
@@ -37,113 +37,163 @@ A comprehensive branch management system with:
 # Clone repository
 git clone https://github.com/LuongMarus/SmartDine_Marus_Feature.git
 
-# Navigate to app
+# Frontend Setup
 cd SmartDine_Marus_Feature/fontend/smart_dine
-
-# Install dependencies
 flutter pub get
-
-# Run app
 flutter run
+
+# Backend Setup  
+cd SmartDine_Marus_Feature/backend/backend/SmartDine_Backend
+./mvnw spring-boot:run
 ```
 
 ---
 
-## 📊 Current Features
+## 📱 Branch Management Screens (12 Total)
 
-| Feature | Status | Progress |
-|---------|--------|----------|
-| Branch Management Dashboard | ✅ Completed | 100% |
-| Order Management System | ✅ Completed | 100% |
-| Notifications Center | ✅ Completed | 100% |
-| Kitchen Display System | 🔄 In Progress | 60% |
-| Inventory Management | 📋 Planned | 20% |
+### 🎯 Main Screens (5)
+1. **Branch Dashboard** - Real-time metrics & quick actions
+2. **Employee Management** - Staff CRUD operations 
+3. **Table Management** - Table setup & type management
+4. **Branch Reports** - Date-filtered analytics
+5. **Settings** - Branch configuration
 
----
-
-## 🛠️ Tech Stack
-
-- **Frontend**: Flutter 3.7.0, Dart 3.0+
-- **Charts**: fl_chart 0.66.0
-- **Design**: Material Design, Google Fonts
-- **State**: StatefulWidget + setState
-- **Backend** (planned): Spring Boot, PostgreSQL
+### 📋 Supporting Screens (7)  
+6. **Order List** - Branch order tracking
+7. **Order Detail** - Individual order management
+8. **Today Activities** - Daily operations summary
+9. **Branch Performance** - Employee & hourly analytics
+10. **Notifications** - Alert management center
+11. **Table Type Management** - Table category setup
+12. **Branch Statistics** - Comprehensive reporting
 
 ---
 
-## 📱 Screens Developed
+## 🛠️ Technical Implementation
 
-1. **Dashboard** - Interactive revenue & orders analytics
-2. **Dish Statistics** - Best-selling dishes with charts
-3. **Branch Performance** - Employee & hourly metrics
-4. **Order List** - Order tracking with status
-5. **Order Details** - Dynamic order information
-6. **Notifications** - Categorized alert system
-7. **Today Activities** - Daily operations summary
-8. **Settings** - Branch configuration
+### Frontend (Flutter)
+- **State Management**: Riverpod providers
+- **Charts**: fl_chart for interactive analytics  
+- **UI**: Material Design with dark/light themes
+- **Navigation**: Named routes with parameter passing
+- **Data**: Real-time updates with proper error handling
 
----
+### Backend (Spring Boot)
+- **Controllers**: 5 main controllers with 15+ endpoints
+- **Services**: Business logic with validation
+- **Models**: JPA entities with relationships
+- **Database**: PostgreSQL with optimized queries
+- **Security**: Input validation & error handling
 
-## 🎨 Highlights
-
-### Interactive Charts
-- ✨ Tap-to-show, release-to-hide tooltips
-- 📊 3 time filters per chart (Month/Week/Today)
-- 🎯 Real-time data updates
-- 🌓 Dark/Light mode support
-
-### Smart Notifications
-- 🔔 10+ notification types
-- 🏷️ 4 filter categories
-- 🎨 Color-coded icons
-- ⚡ Real-time status indicators
-
-### Order System
-- 📋 Unique data per order
-- 👥 Employee assignment tracking
-- 💰 4 status types (Paid/Serving/Pending/Cancelled)
-- 🖨️ Print invoice functionality
+### Key APIs Developed
+```
+GET /api/orders/statistics/branch/{branchId}?date=YYYY-MM-DD
+GET /api/employees/branch/{branchId}
+GET /api/table-management/branch/{branchId}  
+DELETE /api/table-management/{id} (with validation)
+GET /api/orders/branch/{branchId}
+```
 
 ---
 
-## 📈 Roadmap
+## 🎨 Feature Highlights
 
-- ✅ **Phase 1**: Foundation & Core UI (Completed)
-- ✅ **Phase 2**: Branch Management (Completed)
-- 🔄 **Phase 3**: Kitchen Display & Inventory (In Progress)
-- 📋 **Phase 4**: Advanced Analytics & Loyalty Program (Planned)
+### 📊 Interactive Analytics
+- **Date Filtering**: Custom date picker with backend integration
+- **Real-time Charts**: Revenue, orders, customer metrics
+- **Dynamic Updates**: Auto-refresh every 2 minutes
+- **Error Handling**: Graceful fallbacks & user feedback
+
+### 🪑 Smart Table Management
+- **Validation Logic**: Prevents deleting occupied tables
+- **Error Messages**: "Cannot delete table with active orders"
+- **Real-time Status**: Table occupancy indicators
+- **Type Management**: Categorized table setup
+
+### 📈 Advanced Reporting
+- **Date Range Filtering**: Historical data analysis
+- **Growth Calculations**: Period-over-period comparisons  
+- **Export Ready**: Data formatted for reports
+- **Performance Metrics**: Employee rankings & analytics
 
 ---
 
-## 📸 Screenshots
+## 🔧 Recent Fixes & Improvements
 
-*Coming soon...*
+### ✅ Date Filtering Fix
+- **Problem**: Branch reports showed only current date data
+- **Solution**: Added optional `date` parameter to backend API
+- **Impact**: Proper historical data filtering now works
+
+### ✅ Table Deletion Validation  
+- **Problem**: Tables could be deleted while customers seated
+- **Solution**: Backend validation checks active orders
+- **Impact**: Error message: "Cannot delete table with active orders"
 
 ---
 
-## 🤝 Collaboration
+## 📊 API Endpoints Summary
 
-This repository contains my individual contributions to the SmartDine project.
+| Endpoint | Method | Purpose | Status |
+|----------|--------|---------|---------|
+| `/api/orders/statistics/branch/{id}` | GET | Branch analytics | ✅ Enhanced |
+| `/api/table-management/{id}` | DELETE | Delete table | ✅ Validated |
+| `/api/employees/branch/{id}` | GET | Staff list | ✅ Working |
+| `/api/orders/branch/{id}` | GET | Branch orders | ✅ Working |
+| `/api/notifications/branch/{id}` | GET | Branch alerts | ✅ Working |
 
-**Main Project**: [SmartDine_Fontend](https://github.com/phuckk05/SmartDine_Fontend)  
-**Team Members**: Phúc, Tú Kiệt
+---
+
+## 📁 File Structure
+
+```
+SmartDine_Marus_Feature/
+├── fontend/smart_dine/lib/
+│   ├── features/branch_management/
+│   │   └── screens/ (12 screens)
+│   ├── API/ (5 API files)
+│   ├── providers/ (Riverpod state management)
+│   └── models/ (Data models)
+└── backend/backend/SmartDine_Backend/
+    ├── controllers/ (5 controllers)
+    ├── services/ (Business logic)
+    ├── models/ (JPA entities)
+    └── repositories/ (Data access)
+```
+
+---
+
+## 🎯 Development Focus
+
+**My Role**: Full-stack development of Branch Management module
+- ✅ **12 Flutter screens** with responsive UI
+- ✅ **Backend APIs** with proper validation  
+- ✅ **State management** using Riverpod
+- ✅ **Error handling** & user feedback
+- ✅ **Date filtering** & validation logic
+- ✅ **Real-time updates** & performance optimization
 
 ---
 
 ## 📝 Documentation
 
-- 📖 [Complete Feature Documentation](README_MARUS.md)
-- 📋 [Branch Management Summary](BRANCH_MANAGEMENT_SUMMARY.md)
-- 🔄 [Order Detail Update](ORDER_DETAIL_UPDATE.md)
-- 🔔 [Notifications Improvement](NOTIFICATIONS_IMPROVEMENT.md)
-- 📝 [Changelog](CHANGELOG.md)
+- 📖 [Branch Management Technical Summary](BRANCH_MANAGEMENT_SUMMARY.md)
+- 🔄 [Changelog](CHANGELOG.md)
+
+---
+
+## 🤝 Project Context
+
+**Main Repository**: [SmartDine_Fontend](https://github.com/phuckk05/SmartDine_Fontend)  
+**Team Project**: Restaurant Management System  
+**My Contribution**: Branch Management Module (12 screens + APIs)
 
 ---
 
 ## 📞 Connect
 
-- **GitHub**: [@LuongMarus](https://github.com/LuongMarus)
-- **Issues**: [Report bugs or suggest features](https://github.com/LuongMarus/SmartDine_Marus_Feature/issues)
+- **GitHub**: [@LuongMarus](https://github.com/LuongMarus)  
+- **Issues**: [Report bugs or suggestions](https://github.com/LuongMarus/SmartDine_Marus_Feature/issues)
 
 ---
 
@@ -155,10 +205,27 @@ MIT License - See [LICENSE](LICENSE) for details
 
 <div align="center">
 
-### ⭐ Star this repo if you find it useful!
+### ⭐ Star this repo if you find the Branch Management module useful!
 
 **Made with ❤️ by Hà Đức Lương**
 
-*Building restaurant management solutions, one feature at a time.*
+*Specialized in Flutter development & restaurant management solutions*
 
 </div>
+
+Bảo mật hệ thống:
+Sử dụng JWT Authentication, xác thực bằng token và phân quyền chi tiết theo từng người dùng.
+  
+# IV. Tổng kết
+
+SmartServe RMS là hệ thống quản lý nhà hàng toàn diện, được thiết kế với:
+
+Ứng dụng di động Flutter cho trải nghiệm người dùng mượt mà, thao tác nhanh.
+
+Backend Spring Boot mạnh mẽ, bảo mật, dễ mở rộng.
+
+Cơ sở dữ liệu Supabase (PostgreSQL) linh hoạt và đáng tin cậy.
+
+Hạ tầng triển khai Render Cloud giúp mở rộng dễ dàng.
+
+Hệ thống hướng đến mục tiêu số hóa quy trình vận hành nhà hàng, giúp quản lý hiệu quả, tiết kiệm chi phí và nâng cao trải nghiệm phục vụ khách hàng.
